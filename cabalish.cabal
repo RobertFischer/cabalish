@@ -23,3 +23,6 @@ executable cabalish
                     ,  classy-prelude >= 1.2.0.1 && < 2
                     ,  filepath >= 1.4.1.1 && < 2
                     ,  directory >= 1.3.0.0 && < 2
+                    ,  Cabal >= 1.24.2.0 && < 2
+                    ,  text >= 1.2.2.1 && < 2
+  --other-modules:       Arguments.hs

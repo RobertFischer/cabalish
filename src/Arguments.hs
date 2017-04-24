@@ -17,8 +17,8 @@ data Command = FetchName FetchNameOpts | FetchVersion FetchVersionOpts
 type FetchNameOpts = ()
 type FetchVersionOpts = ()
 
-readArguments :: IO RunOpts
-readArguments = do
+readOpts :: IO RunOpts
+readOpts = do
     myRunOpts <- myOpts
     customExecParser myPrefs (myInfo myRunOpts)
   where
@@ -45,9 +45,9 @@ myOpts = do
           optionForContents (f:_) = (optionForContents []) <> value f <> showDefault
 
 fetchNameOpts :: Mod CommandFields Command
-fetchNameOpts = undefined
+fetchNameOpts = command "name" $ info (pure $ FetchName ()) $ progDesc "Fetch the name of the project"
 
 fetchVersionOpts :: Mod CommandFields Command
-fetchVersionOpts = undefined
+fetchVersionOpts = command "version" $ info (pure $ FetchVersion ()) $ progDesc "Fetch the version of the project"
 
 
