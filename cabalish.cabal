@@ -1,5 +1,5 @@
 name:                cabalish
-version:             0.1.0.0
+version:             0.1.0.2
 synopsis:            Provides access to the cabal file data for shell scripts
 description:         Use "cabalish name" to get the name from the local cabal file in a shell script, or "cabalish version" to get the version from the local cabal file in a shell script.
 homepage:            https://github.com/RobertFischer/cabalish#readme
@@ -17,7 +17,7 @@ executable cabalish
   hs-source-dirs:      src
   main-is:             Main.hs
   default-language:    Haskell2010
-  ghc-options:         -O3 -Wall
+  ghc-options:         -O3 -Wall +RTS -G1 -qg -qb -ki32k -RTS
   build-depends:       base >= 4.7 && < 5
                     ,  optparse-applicative >= 0.13.2.0 && < 0.14
                     ,  classy-prelude >= 1.2.0.1 && < 2
