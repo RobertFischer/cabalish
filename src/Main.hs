@@ -16,22 +16,24 @@ main = run =<< readOpts
 
 run :: RunOpts -> IO ()
 run opts = case optCommand opts of
-             FetchName fetchOpts -> runFetchName filepath fetchOpts
-             FetchVersion fetchOpts -> runFetchVersion filepath fetchOpts
+             FetchName _ -> runFetchName filepath
+             FetchVersion _ -> runFetchVersion filepath
   where
     filepath = optFilepath opts
 
-runFetchName :: FilePath -> FetchNameOpts -> IO ()
-runFetchName filepath _ = do
+fromPkgDesc :: (PackageDescription -> String) -> FilePath -> IO ()
+fromPkgDesc f filepath = do
   pkgDesc <- readCabalFile filepath
-  let name = unPackageName $ pkgName $ package pkgDesc
+  let result = f pkgDesc
   putStr $ T.pack name
 
-runFetchVersion :: FilePath -> FetchVersionOpts -> IO ()
-runFetchVersion filepath _ = do
-  pkgDesc <- readCabalFile filepath
-  let version = intercalate "." $ map show $ versionBranch $ pkgVersion $ package pkgDesc
-  putStr $ T.pack version
+runFetchName :: FilePath -> IO ()
+runFetchName = fromPkgDesc $ \pkgDesc ->
+  unPackageName $ pkgName $ package pkgDesc
+
+runFetchVersion :: FilePath -> IO ()
+runFetchVersion = fromPkgDesc $ \pkgDesc ->
+  intercalate "." $ map show $ versionBranch $ pkgVersion $ package pkgDesc
 
 readCabalFile :: FilePath -> IO PackageDescription
 readCabalFile filepath = packageDescription <$> readPackageDescription verbose filepath
